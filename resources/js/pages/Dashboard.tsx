@@ -59,7 +59,7 @@ export default function Dashboard({ programmes }: Props) {
 
   return (
     <div className="p-6 text-gray-900 dark:text-gray-100">
-      <h1 className="text-3xl font-bold text-orange-500 mb-6">
+      <h1 className="text-5xl font-bold text-orange-500 mb-6 text-center">
         Trainer Dashboard
       </h1>
 
@@ -142,90 +142,71 @@ export default function Dashboard({ programmes }: Props) {
       <div className="mt-8 overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow p-4">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-orange-500 text-white text-left">
-              <th className="p-3 font-semibold">Name</th>
-              <th className="p-3 font-semibold">Description</th>
-              <th className="p-3 font-semibold">Duration</th>
-              <th className="p-3 font-semibold">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {programmes.map((programme) =>
-              editingId === programme.id ? (
-                // Inline edit row
-                <tr key={programme.id} className="border-b">
-                  <td className="p-3">
-                    <input
-                      type="text"
-                      value={data.name}
-                      onChange={(e) => setData("name", e.target.value)}
-                      className="w-full border rounded p-2 text-black"
-                    />
-                  </td>
-                  <td className="p-3">
-                    <textarea
-                      value={data.description}
-                      onChange={(e) => setData("description", e.target.value)}
-                      className="w-full border rounded p-1 text-black"
-                    />
-                  </td>
-                  <td className="p-3">
-                    <input
-                      type="number"
-                      value={data.duration}
-                      onChange={(e) => setData("duration", e.target.value)}
-                      className="w-full border rounded p-1 text-orange-500"
-                    />
-                  </td>
-                  <td className="p-3 space-x-2">
-                    <button
-                      onClick={(e) => update(programme.id, e)}
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
-                    >
-                      Cancel
-                    </button>
-                  </td>
-                </tr>
-              ) : (
-                // Normal row
-                <tr
-                  key={programme.id}
-                  className="border-b border-gray-300 dark:border-gray-600"
-                >
-                  <td className="p-3 font-medium">{programme.name}</td>
-                  <td className="p-3">{programme.description}</td>
-                  <td className="p-3">{programme.duration} days</td>
-                  <td className="p-3 space-x-2">
-                    <button
-                      onClick={() => {
-                        setEditingId(programme.id);
-                        setData({
-                          name: programme.name,
-                          description: programme.description,
-                          duration: programme.duration,
-                        });
-                      }}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => destroy(programme.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
+  <tr className="bg-orange-500 text-white text-left">
+    <th className="p-3 font-semibold">Name</th>
+    <th className="p-3 font-semibold">Description</th>
+    <th className="p-3 font-semibold">Duration</th>
+    <th className="p-3 font-semibold">Exercises</th> {/* NEW */}
+    <th className="p-3 font-semibold">Actions</th>
+  </tr>
+</thead>
+<tbody>
+  {programmes.map((programme) =>
+    editingId === programme.id ? (
+      // Inline edit row...
+      <tr key={programme.id} className="border-b">
+        {/* keep edit fields as is, skip exercises column */}
+        <td className="p-3" colSpan={2}>
+          {/* optional: leave exercises blank while editing */}
+        </td>
+      </tr>
+    ) : (
+      // Normal row
+      <tr
+        key={programme.id}
+        className="border-b border-gray-300 dark:border-gray-600"
+      >
+        <td className="p-3 font-medium">{programme.name}</td>
+        <td className="p-3">{programme.description}</td>
+        <td className="p-3">{programme.duration} days</td>
+        <td className="p-3">
+          {programme.exercises && programme.exercises.length > 0 ? (
+            <ul className="list-disc list-inside text-sm">
+              {programme.exercises.map((exercise, idx) => (
+                <li key={idx}>
+                  {exercise.name} – {exercise.quantity}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <span className="text-gray-500">No exercises</span>
+          )}
+        </td>
+        <td className="p-3 space-x-2">
+          <button
+            onClick={() => {
+              setEditingId(programme.id);
+              setData({
+                name: programme.name,
+                description: programme.description,
+                duration: programme.duration,
+              });
+            }}
+            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => destroy(programme.id)}
+            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    )
+  )}
+</tbody>
         </table>
       </div>
     </div>
