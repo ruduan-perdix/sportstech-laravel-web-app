@@ -5,7 +5,7 @@ interface Programme {
   name: string;
   description: string;
   duration: number;
-  excercises?: { name: string; quantity: number }[];
+  exercises?: { name: string; quantity: number }[];
 }
 
 interface Props {
@@ -40,9 +40,9 @@ export default function Programme({ programmes }: Props) {
                 <td className="p-3">{programme.description}</td>
                 <td className="p-3">{programme.duration} days</td>
                 <td className="p-3">
-                  {programme.excercises ? (
+                  {programme.exercises ? (
                     <ul className="list-disc pl-5">
-                      {programme.excercises.map((ex, idx) => (
+                      {programme.exercises.map((ex, idx) => (
                         <li key={idx}>
                           {ex.name} – {ex.quantity}
                         </li>
