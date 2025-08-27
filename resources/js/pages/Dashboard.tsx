@@ -6,7 +6,7 @@ interface Programme {
   name: string;
   description: string;
   duration: number;
-  excercises?: { name: string; quantity: number }[];
+  exercises?: { name: string; quantity: number }[];
 }
 
 interface Props {
